@@ -1,0 +1,32 @@
+<?php
+    use Uzhnu\BDModule\Block\Datasource;
+    /** @var Datasource $block */
+
+if(isset($_POST["list"])) {
+    $i = 0;
+    foreach ($_POST["list"] as $el){
+        echo $el;
+        $block->getListProduct()->get($i++)->chengInStock($el);
+    }
+} ?>
+
+
+<form method="POST">
+<ol>
+    <?php foreach ($block->getListProduct() as $list):?>
+        <li>
+            <?= $list->getTitle() ?> - <?= $list->getCount() ?>
+                <input id="<?= $list->getId() ?>" name="list[]" type="checkbox"
+                        value="<?= $list->getStock()?>"
+                    <?= ($list->getStock()) ? 'checked' : '' ?>
+                       >
+            <?php
+                $list->chengInStock(0)
+            ?>
+        </li>
+    <?php endforeach;?>
+</ol>
+    <input type="submit" value="Обновити список">
+</form>
+
+
